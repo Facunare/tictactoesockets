@@ -16,7 +16,7 @@ class TicTacToe():
             self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
         else:
             self.player_symbol = f"\033[94m{player_symbol}\033[0m"
-
+        # self.player_symbol = player_symbol
     def ocupado(self, grid_coord):
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
@@ -55,13 +55,34 @@ class TicTacToe():
         for i in range(9):
             self.symbol_list[i] = " "
 
+    def colorear(self, color2):
+        if color2 == "red":
+            color = "\033[91m"
+        elif color2 == "blue":
+            color = "\033[94m"
+        reset_color = "\033[0m"
+        print(f"\n       A   B   C\n")
+        row_one = f"   1   {self.symbol_list[0]} {color}║{reset_color} {self.symbol_list[1]} {color}║{reset_color} {self.symbol_list[2]}"
+        row_two = f"   2   {self.symbol_list[3]} {color}║{reset_color} {self.symbol_list[4]} {color}║{reset_color} {self.symbol_list[5]}"
+        row_three = f"   3   {self.symbol_list[6]} {color}║{reset_color} {self.symbol_list[7]} {color}║{reset_color} {self.symbol_list[8]}"
+
+        horizontal_line = f"      {color}═══╬═══╬═══{reset_color}"
+
+        print(row_one)
+        print(horizontal_line)
+        print(row_two)
+        print(horizontal_line)
+        print(row_three, "\n")
+
 
     def draw_grid(self):
+        color = ""
         # display the column headers
+
         print("\n       A   B   C\n")
         
         # display first row 
-        row_one = "   1   " + self.symbol_list[0]
+        row_one = "   1   " + color + self.symbol_list[0]
         row_one += " ║ " + self.symbol_list[1]
         row_one += " ║ " + self.symbol_list[2]
         print(row_one)
@@ -130,49 +151,76 @@ class TicTacToe():
 
 
     def did_win(self, player_symbol):
-        # local variable to replace unweildy self.symbol_list
+        # Local variable to replace unwieldy self.symbol_list
         g = []
         for i in range(9):
             g.append(self.symbol_list[i])
 
-        # likewise to replace self.player_symbol 
-        sym = player_symbol
+        # Get the ANSI color codes for the player's symbols
+        x_color = f"\033[91m{player_symbol}\033[0m"
+        o_color = f"\033[94m{player_symbol}\033[0m"
 
-        # check top row 
-        if g[0] == sym and g[1] == sym and g[2] == sym:
+        # Check top row
+        if g[0] == x_color and g[1] == x_color and g[2] == x_color:
             return True
 
-        # check middle row
-        elif g[3] == sym and g[4] == sym and g[5] == sym:
-            return True
-        
-        # check bottom row 
-        elif g[6] == sym and g[7] == sym and g[8] == sym:
-            return True 
-
-        # check left column 
-        elif g[0] == sym and g[3] == sym and g[6] == sym:
-            return True 
-
-        # check middle column 
-        elif g[1] == sym and g[4] == sym and g[7] == sym:
-            return True 
-
-        # check right column 
-        elif g[2] == sym and g[5] == sym and g[8] == sym:
+        # Check middle row
+        elif g[3] == x_color and g[4] == x_color and g[5] == x_color:
             return True
 
-        # check top-right to bottom-left 
-        elif g[2] == sym and g[4] == sym and g[6] == sym:
-            return True 
+        # Check bottom row
+        elif g[6] == x_color and g[7] == x_color and g[8] == x_color:
+            return True
 
-        # check top-left to bottom-right 
-        elif g[0] == sym and g[4] == sym and g[8] == sym:
-            return True 
+        # Check left column
+        elif g[0] == x_color and g[3] == x_color and g[6] == x_color:
+            return True
 
-        # didn't win... yet! 
+        # Check middle column
+        elif g[1] == x_color and g[4] == x_color and g[7] == x_color:
+            return True
+
+        # Check right column
+        elif g[2] == x_color and g[5] == x_color and g[8] == x_color:
+            return True
+
+        # Check top-right to bottom-left
+        elif g[2] == x_color and g[4] == x_color and g[6] == x_color:
+            return True
+
+        # Check top-left to bottom-right
+        elif g[0] == x_color and g[4] == x_color and g[8] == x_color:
+            return True
+        elif g[3] == o_color and g[4] == o_color and g[5] == o_color:
+            return True
+
+        # Check bottom row
+        elif g[6] == o_color and g[7] == o_color and g[8] == o_color:
+            return True
+
+        # Check left column
+        elif g[0] == o_color and g[3] == o_color and g[6] == o_color:
+            return True
+
+        # Check middle column
+        elif g[1] == o_color and g[4] == o_color and g[7] == o_color:
+            return True
+
+        # Check right column
+        elif g[2] == o_color and g[5] == o_color and g[8] == o_color:
+            return True
+
+        # Check top-right to bottom-left
+        elif g[2] == o_color and g[4] == o_color and g[6] == o_color:
+            return True
+
+        # Check top-left to bottom-right
+        elif g[0] == o_color and g[4] == o_color and g[8] == o_color:
+            return True
+
+
+        # Didn't win
         return False
-
 
     def is_draw(self):
         # see if all the spaces are used up 

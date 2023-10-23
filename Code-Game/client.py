@@ -60,7 +60,8 @@ while rematch == True:
 
     # end game messages
     if player_o.did_win("O") == True:
-        print(f"Congrats, you won!")
+        player_o.colorear("blue")
+        print(f"\033[94mGanador color azul\033[0m" )
     elif player_o.is_draw() == True:
         print(f"It's a draw!")
     else:
