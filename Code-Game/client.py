@@ -29,17 +29,25 @@ while rematch == True:
     player_o.update_symbol_list(x_symbol_list)
 
     # the rest is in a loop; if either player has won, it exits
+    tries = 0
     while player_o.did_win("O") == False and player_o.did_win("X") == False and player_o.is_draw() == False:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_o.draw_grid()
         while True:
-            player_coord = input(f"Enter coordinate: ")
-            if not player_o.ocupado(player_coord):
-                player_o.edit_square(player_coord)
-                break
-            else:
-                print("Ocupado")
+            print("Intentos " + str(tries))
+            if tries >= 3:
+                print("Ahora debe mover una X de lugar")
+            else:             
+                player_coord = input(f"Enter coordinate: ")
+                if not player_o.ocupado(player_coord):
+                    player_o.edit_square(player_coord)
+                    tries += 1
+                    break
+                else:
+                    print("Ocupado")
+                    
+            
 
         # draw grid again
         player_o.draw_grid()
