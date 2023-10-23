@@ -12,7 +12,10 @@ class TicTacToe():
             self.symbol_list.append(" ") 
 
         # initializes the player symbol
-        self.player_symbol = player_symbol
+        if player_symbol == "X":
+            self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
+        else:
+            self.player_symbol = f"\033[94m{player_symbol}\033[0m"
 
     def ocupado(self, grid_coord):
         if grid_coord[0].isdigit():
@@ -84,6 +87,7 @@ class TicTacToe():
 
     def edit_square(self, grid_coord):
         # swamps coordinates such as "1A" to "A1"
+        
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
 
@@ -122,8 +126,6 @@ class TicTacToe():
 
     def update_symbol_list(self, new_symbol_list):
         for i in range(9):
-            print(i)
-            print("Aca ocurre cuando mando")
             self.symbol_list[i] = new_symbol_list[i]
 
 
