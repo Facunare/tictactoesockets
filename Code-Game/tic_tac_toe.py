@@ -1,6 +1,7 @@
 """
 Tic Tac Toe
 """
+import numpy as np
 
 class TicTacToe():
 
@@ -322,6 +323,10 @@ class TicTacToe():
                 grid_index = 7
             elif col == "C":
                 grid_index = 8
-                
-        self.symbol_list[grid_index] = ' '
+
+        print(self.symbol_list[grid_index])
+        a = np.array(self.symbol_list)
+        a[grid_index] = " "
+        # for x in self.symbol_list:
+        #     print("")
         
