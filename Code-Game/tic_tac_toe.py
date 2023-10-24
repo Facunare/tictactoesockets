@@ -11,15 +11,12 @@ class TicTacToe():
         for i in range(9):
             self.symbol_list.append(" ") 
 
+        self.player_symbol = player_symbol
         # initializes the player symbol
-        if player_symbol == "X":
-            self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
-        else:
-            self.player_symbol = f"\033[94m{player_symbol}\033[0m"
-        # self.player_symbol = player_symbol
-        
-        print("=================================")
-        print(self.symbol_list)
+        # if player_symbol == "X":
+        #     self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
+        # else:
+        #     self.player_symbol = f"\033[94m{player_symbol}\033[0m"
     def ocupado(self, grid_coord):
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
@@ -161,9 +158,10 @@ class TicTacToe():
             
 
         # Get the ANSI color codes for the player's symbols
-        x_color = f"\033[91m{player_symbol}\033[0m"
-        o_color = f"\033[94m{player_symbol}\033[0m"
-
+        # x_color = f"\033[91m{player_symbol}\033[0m"
+        # o_color = f"\033[94m{player_symbol}\033[0m"
+        x_color = "X"
+        o_color = "O"
         # Check top row
         if g[0] == x_color and g[1] == x_color and g[2] == x_color:
             return True
@@ -224,7 +222,6 @@ class TicTacToe():
 
 
         # Didn't win
-        print("===============================")
         print(g)
         return False
 
@@ -253,6 +250,60 @@ class TicTacToe():
         if row == "1":
             if col == "A":
                 grid_index = 0
+                print("Podes modificar a: B1 y A2")
+                if not self.ocupado("B1"):
+                    print("1. Mover a B1")
+                if not self.ocupado("A2"):
+                    print("2. Mover a A2")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
+
+            elif col == "B":
+                grid_index = 1
+                print("Podes modificar a: A1, C1 y B2")
+            elif col == "C":
+                grid_index = 2
+                print("Podes modificar a: B1 y C2")
+        elif row == "2":
+            if col == "A":
+                grid_index = 3
+                print("Podes modificar a: A1, B2 y A3")
+            elif col == "B":
+                grid_index = 4
+                print("Podes modificar a: B1, A2, C2 y B3")
+            elif col == "C":
+                grid_index = 5
+                print("Podes modificar a: C1, C3 y B2")
+        elif row == "3":
+            if col == "A":
+                grid_index = 6
+                print("Podes modificar a: A2 y B3")
+            elif col == "B":
+                grid_index = 7
+                print("Podes modificar a: A3, B2 y C3")
+            elif col == "C":
+                grid_index = 8
+                print("Podes modificar a: C2 y B3")
+
+        if self.symbol_list[grid_index] == " ":
+            self.symbol_list[grid_index] = self.player_symbol
+        print(self.symbol_list)
+        return g
+    def delete_coord(self, grid_coord):
+        if grid_coord[0].isdigit():
+            grid_coord = grid_coord[1] + grid_coord[0]
+
+        # divides the coordinate 
+        col = grid_coord[0].capitalize()
+        row = grid_coord[1]
+
+        # converts "A1" to 0, "C3" to 8, and so forth 
+        grid_index = 0
+
+        if row == "1":
+            if col == "A":
+                grid_index = 0
             elif col == "B":
                 grid_index = 1
             elif col == "C":
@@ -271,7 +322,6 @@ class TicTacToe():
                 grid_index = 7
             elif col == "C":
                 grid_index = 8
-
-        if self.symbol_list[grid_index] == " ":
-            self.symbol_list[grid_index] = self.player_symbol
-        return g
+                
+        self.symbol_list[grid_index] = ' '
+        
