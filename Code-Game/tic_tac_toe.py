@@ -17,6 +17,9 @@ class TicTacToe():
         else:
             self.player_symbol = f"\033[94m{player_symbol}\033[0m"
         # self.player_symbol = player_symbol
+        
+        print("=================================")
+        print(self.symbol_list)
     def ocupado(self, grid_coord):
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
@@ -155,6 +158,7 @@ class TicTacToe():
         g = []
         for i in range(9):
             g.append(self.symbol_list[i])
+            
 
         # Get the ANSI color codes for the player's symbols
         x_color = f"\033[91m{player_symbol}\033[0m"
@@ -220,6 +224,8 @@ class TicTacToe():
 
 
         # Didn't win
+        print("===============================")
+        print(g)
         return False
 
     def is_draw(self):
@@ -234,4 +240,38 @@ class TicTacToe():
             return True
         else:
             return False
+    
+    def swap_position(self, player_symbol, coord):
+        print("Selected", coord)
+        g = []
+        for i in range(9):
+            g.append(self.symbol_list[i])
+        col = coord[0].capitalize()
+        row = coord[1]
+        grid_index = 0
 
+        if row == "1":
+            if col == "A":
+                grid_index = 0
+            elif col == "B":
+                grid_index = 1
+            elif col == "C":
+                grid_index = 2
+        elif row == "2":
+            if col == "A":
+                grid_index = 3
+            elif col == "B":
+                grid_index = 4
+            elif col == "C":
+                grid_index = 5
+        elif row == "3":
+            if col == "A":
+                grid_index = 6
+            elif col == "B":
+                grid_index = 7
+            elif col == "C":
+                grid_index = 8
+
+        if self.symbol_list[grid_index] == " ":
+            self.symbol_list[grid_index] = self.player_symbol
+        return g

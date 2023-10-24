@@ -34,12 +34,17 @@ while rematch == True:
         while True:
             print("Intentos " + str(tries))
             if tries >= 3:
-                print("Ahora debe mover una X de lugar")
-                select_movement = input(f"Enter coordinate: ")
-                if not player_x.ocupado(select_movement):
-                    print("No hay una X ahi")
-                print(select_movement + "-->")
-                break
+                while True:
+                    print("Ahora debe mover una X de lugar")
+                    select_movement = input(f"Enter coordinate: ")
+                    if not player_x.ocupado(select_movement):
+                        print("No hay una X ahi")
+                    else:
+                        print(select_movement + "-->")
+                        grid = player_x.swap_position("X", select_movement)
+                        print(grid)
+                        player_x.draw_grid()
+                        break
             else:  
                 player_coord = input(f"Enter coordinate: ")
                 if not player_x.ocupado(player_coord):
