@@ -36,14 +36,15 @@ while rematch == True:
         player_o.draw_grid()
         if tries >= 3:
             while True:
-                print("Ahora debe mover una X de lugar")
+                print("Ahora debe mover una O de lugar")
                 select_movement = input(f"Enter coordinate: ")
-                if not player_o.ocupado(select_movement):
-                    print("No hay una X ahi")
+                if not player_o.ocupado(select_movement) or player_o.ocupado_rival(select_movement) == f"\033[91mX\033[0m":
+                    print("No hay una O ahi")
                 else:
                 
-                    grid = player_o.swap_position("O", select_movement)
-                    print(grid)
+                    notMoves = player_o.swap_position("O", select_movement)
+                    if not notMoves:
+                        break
                     player_o.draw_grid()
                     break
         else:  

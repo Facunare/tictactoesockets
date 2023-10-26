@@ -250,114 +250,106 @@ class TicTacToe():
             g.append(self.symbol_list[i])
         col = coord[0].capitalize()
         row = coord[1]
-        grid_index = 0
+        while True:
+            valid_options = []
 
-        if row == "1":
-            if col == "A":
-                grid_index = 0
-                print("Podes modificar a: B1 y A2")
-                if not self.ocupado("B1"):
-                    print("1. Mover a B1")
-                if not self.ocupado("A2"):
-                    print("2. Mover a A2")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
+            if row == "1":
+                if col == "A":
+                    if not self.ocupado("B1"):
+                        print("1. Mover a B1")
+                        valid_options.append("B1")
+                    if not self.ocupado("A2"):
+                        print("2. Mover a A2")
+                        valid_options.append("A2")
+                elif col == "B":
+                    if not self.ocupado("A1"):
+                        print("1. Mover a A1")
+                        valid_options.append("A1")
+                    if not self.ocupado("C1"):
+                        print("2. Mover a C1")
+                        valid_options.append("C1")
+                    if not self.ocupado("B2"):
+                        print("3. Mover a B2")
+                        valid_options.append("B2")
+                elif col == "C":
+                    if not self.ocupado("B1"):
+                        print("1. Mover a B1")
+                        valid_options.append("B1")
+                    if not self.ocupado("C2"):
+                        print("2. Mover a C2")
+                        valid_options.append("C2")
+            elif row == "2":
+                if col == "A":
+                    if not self.ocupado("A1"):
+                        print("1. Mover a A1")
+                        valid_options.append("A1")
+                    if not self.ocupado("A3"):
+                        print("2. Mover a A3")
+                        valid_options.append("A3")
+                    if not self.ocupado("B2"):
+                        print("3. Mover a B2")
+                        valid_options.append("B2")
+                elif col == "B":
+                    if not self.ocupado("A2"):
+                        print("1. Mover a A2")
+                        valid_options.append("A2")
+                    if not self.ocupado("C2"):
+                        print("2. Mover a C2")
+                        valid_options.append("C2")
+                    if not self.ocupado("B1"):
+                        print("3. Mover a B1")
+                        valid_options.append("B1")
+                    if not self.ocupado("B3"):
+                        print("4. Mover a B3")
+                        valid_options.append("B3")
+                elif col == "C":
+                    if not self.ocupado("C1"):
+                        print("1. Mover a C1")
+                        valid_options.append("C1")
+                    if not self.ocupado("C3"):
+                        print("2. Mover a C3")
+                        valid_options.append("C3")
+                    if not self.ocupado("B2"):
+                        print("3. Mover a B2")
+                        valid_options.append("B2")
+            elif row == "3":
+                if col == "A":
+                    if not self.ocupado("A2"):
+                        print("1. Mover a A2")
+                        valid_options.append("A2")
+                    if not self.ocupado("B3"):
+                        print("4. Mover a B3")
+                        valid_options.append("B3")
+                elif col == "B":
+                    if not self.ocupado("A3"):
+                        print("1. Mover a A3")
+                        valid_options.append("A3")
+                    if not self.ocupado("C3"):
+                        print("2. Mover a C3")
+                        valid_options.append("C3")
+                    if not self.ocupado("B2"):
+                        print("3. Mover a B2")
+                        valid_options.append("B2")
+                elif col == "C":
+                    if not self.ocupado("C2"):
+                        print("2. Mover a C2")
+                        valid_options.append("C2")
+                    if not self.ocupado("B3"):
+                        print("4. Mover a B3")
+                        valid_options.append("B3")
 
-            elif col == "B":
-                grid_index = 1
-                print("Podes modificar a: A1, C1 y B2")
-                if not self.ocupado("A1"):
-                    print("1. Mover a A1")
-                if not self.ocupado("C1"):
-                    print("2. Mover a C1")
-                if not self.ocupado("B2"):
-                    print("3. Mover a B2")
-                option_swaped = input(f"Enter option: ")
+            if not valid_options:
+                print("No hay ninguna opcion valida. Perdiste tu turno!!")
+                return False
+            option_swaped = input(f"Enter option: ").upper()
+            if option_swaped in valid_options:
                 self.edit_square(option_swaped)
                 self.delete_coord(coord)
-            elif col == "C":
-                grid_index = 2
-                print("Podes modificar a: B1 y C2")
-                if not self.ocupado("C2"):
-                    print("1. Mover a C2")
-                if not self.ocupado("B1"):
-                    print("2. Mover a B1")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-        elif row == "2":
-            if col == "A":
-                grid_index = 3
-                print("Podes modificar a: A1, B2 y A3")
-                if not self.ocupado("A1"):
-                    print("1. Mover a A1")
-                if not self.ocupado("A3"):
-                    print("2. Mover a A3")
-                if not self.ocupado("B2"):
-                    print("3. Mover a B2")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-            elif col == "B":
-                grid_index = 4
-                print("Podes modificar a: B1, A2, C2 y B3")
-                if not self.ocupado("A2"):
-                    print("1. Mover a A2")
-                if not self.ocupado("C2"):
-                    print("2. Mover a C2")
-                if not self.ocupado("B1"):
-                    print("3. Mover a B1")
-                if not self.ocupado("B3"):
-                    print("4. Mover a B3")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-            elif col == "C":
-                grid_index = 5
-                print("Podes modificar a: C1, C3 y B2")
-                if not self.ocupado("C1"):
-                    print("1. Mover a C1")
-                if not self.ocupado("C1"):
-                    print("2. Mover a C1")
-                if not self.ocupado("B2"):
-                    print("3. Mover a B2")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-        elif row == "3":
-            if col == "A":
-                grid_index = 6
-                print("Podes modificar a: A2 y B3")
-                if not self.ocupado("A2"):
-                    print("1. Mover a A2")
-                if not self.ocupado("B3"):
-                    print("4. Mover a B3")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-            elif col == "B":
-                grid_index = 7
-                print("Podes modificar a: A3, B2 y C3")
-                if not self.ocupado("A3"):
-                    print("1. Mover a A3")
-                if not self.ocupado("C3"):
-                    print("2. Mover a C3")
-                if not self.ocupado("B2"):
-                    print("3. Mover a B2")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
-            elif col == "C":
-                grid_index = 8
-                print("Podes modificar a: C2 y B3")
-                if not self.ocupado("C2"):
-                    print("2. Mover a C2")
-                if not self.ocupado("B3"):
-                    print("4. Mover a B3")
-                option_swaped = input(f"Enter option: ")
-                self.edit_square(option_swaped)
-                self.delete_coord(coord)
+                break
+            else:
+                print("Opción inválida. Las opciones válidas son:", ", ".join(valid_options))
+            
+        return True
 
 
 
@@ -396,4 +388,38 @@ class TicTacToe():
 
 
         self.symbol_list[grid_index] = "-"
+
+    def ocupado_rival(self, grid_coord):
+        if grid_coord[0].isdigit():
+            grid_coord = grid_coord[1] + grid_coord[0]
+
+        col = grid_coord[0].capitalize()
+        row = grid_coord[1]
+
+        grid_index = 0
+        rival_symbol = "X" if self.player_symbol == "O" else "O"  # Determinar el símbolo del rival
+
+        if row == "1":
+            if col == "A":
+                grid_index = 0
+            elif col == "B":
+                grid_index = 1
+            elif col == "C":
+                grid_index = 2
+        elif row == "2":
+            if col == "A":
+                grid_index = 3
+            elif col == "B":
+                grid_index = 4
+            elif col == "C":
+                grid_index = 5
+        elif row == "3":
+            if col == "A":
+                grid_index = 6
+            elif col == "B":
+                grid_index = 7
+            elif col == "C":
+                grid_index = 8
+        self.symbol_list[grid_index] == rival_symbol
+        return self.symbol_list[grid_index]
 

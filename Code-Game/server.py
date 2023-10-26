@@ -36,12 +36,14 @@ while rematch == True:
             while True:
                 print("Ahora debe mover una X de lugar")
                 select_movement = input(f"Enter coordinate: ")
-                if not player_x.ocupado(select_movement):
+                print(player_x.ocupado_rival(select_movement))
+                if not player_x.ocupado(select_movement) or player_x.ocupado_rival(select_movement) == f"\033[94mO\033[0m":
                     print("No hay una X ahi")
                 else:
                 
-                    grid = player_x.swap_position("X", select_movement)
-                    
+                    notMoves = player_x.swap_position("X", select_movement)
+                    if not notMoves:
+                        break
                     player_x.draw_grid()
                     break
         else:  
@@ -113,6 +115,4 @@ spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
 
 client_socket.close()
 
-
-# Que no se pueda seleccionar para mover la ficha del otro.
-# No poder mover a un lugar no permitido
+# Aceptar todo tipo de escritura
