@@ -34,11 +34,20 @@ while rematch == True:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_o.draw_grid()
-        while True:
-            print("Intentos " + str(tries))
-            if tries >= 3:
+        if tries >= 3:
+            while True:
                 print("Ahora debe mover una X de lugar")
-            else:             
+                select_movement = input(f"Enter coordinate: ")
+                if not player_o.ocupado(select_movement):
+                    print("No hay una X ahi")
+                else:
+                
+                    grid = player_o.swap_position("O", select_movement)
+                    print(grid)
+                    player_o.draw_grid()
+                    break
+        else:  
+            while True:
                 player_coord = input(f"Enter coordinate: ")
                 if not player_o.ocupado(player_coord):
                     player_o.edit_square(player_coord)
@@ -46,7 +55,6 @@ while rematch == True:
                     break
                 else:
                     print("Ocupado")
-                    
             
 
         # draw grid again

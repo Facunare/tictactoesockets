@@ -31,21 +31,21 @@ while rematch == True:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_x.draw_grid()
-        while True:
-            print("Intentos " + str(tries))
-            if tries >= 3:
-                while True:
-                    print("Ahora debe mover una X de lugar")
-                    select_movement = input(f"Enter coordinate: ")
-                    if not player_x.ocupado(select_movement):
-                        print("No hay una X ahi")
-                    else:
-                        print(select_movement + "-->")
-                        grid = player_x.swap_position("X", select_movement)
-                        print(grid)
-                        player_x.draw_grid()
-                        break
-            else:  
+        
+        if tries >= 3:
+            while True:
+                print("Ahora debe mover una X de lugar")
+                select_movement = input(f"Enter coordinate: ")
+                if not player_x.ocupado(select_movement):
+                    print("No hay una X ahi")
+                else:
+                
+                    grid = player_x.swap_position("X", select_movement)
+                    
+                    player_x.draw_grid()
+                    break
+        else:  
+            while True:
                 player_coord = input(f"Enter coordinate: ")
                 if not player_x.ocupado(player_coord):
                     player_x.edit_square(player_coord)
@@ -112,3 +112,7 @@ while rematch == True:
 spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
 
 client_socket.close()
+
+
+# Que no se pueda seleccionar para mover la ficha del otro.
+# No poder mover a un lugar no permitido

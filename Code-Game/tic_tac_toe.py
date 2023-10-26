@@ -10,14 +10,15 @@ class TicTacToe():
         self.symbol_list = []
         # defines all nine symbols; all start off as blank  
         for i in range(9):
-            self.symbol_list.append(" ") 
+            self.symbol_list.append("-") 
 
-        self.player_symbol = player_symbol
-        # initializes the player symbol
-        # if player_symbol == "X":
-        #     self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
-        # else:
-        #     self.player_symbol = f"\033[94m{player_symbol}\033[0m"
+        # self.player_symbol = player_symbol
+     
+        if player_symbol == "X":
+            self.player_symbol = f"\033[91m{player_symbol}\033[0m" 
+        else:
+            self.player_symbol = f"\033[94m{player_symbol}\033[0m"
+            
     def ocupado(self, grid_coord):
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
@@ -26,7 +27,7 @@ class TicTacToe():
         row = grid_coord[1]
 
         grid_index = 0
-
+        contrario = ""
         if row == "1":
             if col == "A":
                 grid_index = 0
@@ -48,13 +49,18 @@ class TicTacToe():
                 grid_index = 7
             elif col == "C":
                 grid_index = 8
+            
+        if self.player_symbol == "X":
+            contrario = f"\033[91mO\033[0m"
+        else:
+            contrario = f"\033[91mX\033[0m"
 
-        return self.symbol_list[grid_index] != " "
+        return self.symbol_list[grid_index] != "-" or self.symbol_list[grid_index] == contrario
 
     def restart(self):
         # clears the grid 
         for i in range(9):
-            self.symbol_list[i] = " "
+            self.symbol_list[i] = "-"
 
     def colorear(self, color2):
         if color2 == "red":
@@ -142,7 +148,7 @@ class TicTacToe():
             elif col == "C":
                 grid_index = 8
 
-        if self.symbol_list[grid_index] == " ":
+        if self.symbol_list[grid_index] == "-":
             self.symbol_list[grid_index] = self.player_symbol
 
 
@@ -159,10 +165,8 @@ class TicTacToe():
             
 
         # Get the ANSI color codes for the player's symbols
-        # x_color = f"\033[91m{player_symbol}\033[0m"
-        # o_color = f"\033[94m{player_symbol}\033[0m"
-        x_color = "X"
-        o_color = "O"
+        x_color = f"\033[91m{player_symbol}\033[0m"
+        o_color = f"\033[94m{player_symbol}\033[0m"
         # Check top row
         if g[0] == x_color and g[1] == x_color and g[2] == x_color:
             return True
@@ -223,14 +227,14 @@ class TicTacToe():
 
 
         # Didn't win
-        print(g)
+     
         return False
 
     def is_draw(self):
         # see if all the spaces are used up 
         num_blanks = 0
         for i in range(9):
-                if self.symbol_list[i] == " ":
+                if self.symbol_list[i] == " " or self.symbol_list[i] == "-":
                     num_blanks += 1
 
         # if the player didn't win and no spaces are left, it's a draw
@@ -263,43 +267,109 @@ class TicTacToe():
             elif col == "B":
                 grid_index = 1
                 print("Podes modificar a: A1, C1 y B2")
+                if not self.ocupado("A1"):
+                    print("1. Mover a A1")
+                if not self.ocupado("C1"):
+                    print("2. Mover a C1")
+                if not self.ocupado("B2"):
+                    print("3. Mover a B2")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
             elif col == "C":
                 grid_index = 2
                 print("Podes modificar a: B1 y C2")
+                if not self.ocupado("C2"):
+                    print("1. Mover a C2")
+                if not self.ocupado("B1"):
+                    print("2. Mover a B1")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
         elif row == "2":
             if col == "A":
                 grid_index = 3
                 print("Podes modificar a: A1, B2 y A3")
+                if not self.ocupado("A1"):
+                    print("1. Mover a A1")
+                if not self.ocupado("A3"):
+                    print("2. Mover a A3")
+                if not self.ocupado("B2"):
+                    print("3. Mover a B2")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
             elif col == "B":
                 grid_index = 4
                 print("Podes modificar a: B1, A2, C2 y B3")
+                if not self.ocupado("A2"):
+                    print("1. Mover a A2")
+                if not self.ocupado("C2"):
+                    print("2. Mover a C2")
+                if not self.ocupado("B1"):
+                    print("3. Mover a B1")
+                if not self.ocupado("B3"):
+                    print("4. Mover a B3")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
             elif col == "C":
                 grid_index = 5
                 print("Podes modificar a: C1, C3 y B2")
+                if not self.ocupado("C1"):
+                    print("1. Mover a C1")
+                if not self.ocupado("C1"):
+                    print("2. Mover a C1")
+                if not self.ocupado("B2"):
+                    print("3. Mover a B2")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
         elif row == "3":
             if col == "A":
                 grid_index = 6
                 print("Podes modificar a: A2 y B3")
+                if not self.ocupado("A2"):
+                    print("1. Mover a A2")
+                if not self.ocupado("B3"):
+                    print("4. Mover a B3")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
             elif col == "B":
                 grid_index = 7
                 print("Podes modificar a: A3, B2 y C3")
+                if not self.ocupado("A3"):
+                    print("1. Mover a A3")
+                if not self.ocupado("C3"):
+                    print("2. Mover a C3")
+                if not self.ocupado("B2"):
+                    print("3. Mover a B2")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
             elif col == "C":
                 grid_index = 8
                 print("Podes modificar a: C2 y B3")
+                if not self.ocupado("C2"):
+                    print("2. Mover a C2")
+                if not self.ocupado("B3"):
+                    print("4. Mover a B3")
+                option_swaped = input(f"Enter option: ")
+                self.edit_square(option_swaped)
+                self.delete_coord(coord)
 
-        if self.symbol_list[grid_index] == " ":
-            self.symbol_list[grid_index] = self.player_symbol
-        print(self.symbol_list)
-        return g
+
+
     def delete_coord(self, grid_coord):
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
 
-        # divides the coordinate 
+        # divides the coordinate
         col = grid_coord[0].capitalize()
         row = grid_coord[1]
 
-        # converts "A1" to 0, "C3" to 8, and so forth 
+        # converts "A1" to 0, "C3" to 8, and so forth
         grid_index = 0
 
         if row == "1":
@@ -324,9 +394,6 @@ class TicTacToe():
             elif col == "C":
                 grid_index = 8
 
-        print(self.symbol_list[grid_index])
-        a = np.array(self.symbol_list)
-        a[grid_index] = " "
-        # for x in self.symbol_list:
-        #     print("")
-        
+
+        self.symbol_list[grid_index] = "-"
+
