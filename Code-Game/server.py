@@ -12,41 +12,31 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 s.listen(5)
 
-# accept a connection from the client 
 client_socket, client_address = s.accept()
 print(f"\nConnnected to {client_address}!")
 
-# set up the game
 player_x = TicTacToe("X")
 
-# allow the player to suggest playing again
-host_response = input(f"\nBO1, BO3 o BO5 ")
-host_response = host_response.capitalize()
+host_response = input("\nBO1, BO3 o BO5: ")
+host_response = host_response.upper()
 temp_host_resp = host_response
 client_response = ""
 
-# pickle response and send it to the client 
 host_response = pickle.dumps(host_response)
 client_socket.send(host_response)
 
-print(f"Waiting for client response...")
+print("Waiting for client response...")
 client_response = client_socket.recv(1024)
 client_response = pickle.loads(client_response)
 
-# if the client doesn't want a rematch, exit the loop 
-if host_response=="BO1" and client_response=="Y":
-    print("aca")
+tipo = ""
+print(temp_host_resp, client_response)
+if temp_host_resp == "BO1" and client_response == "Y":
     tipo = "BO1"
-elif host_response=="BO3" and client_response=="Y":
+elif temp_host_resp == "BO3" and client_response == "Y":
     tipo = "BO3"
-elif host_response=="BO5" and client_response=="Y":
+elif temp_host_resp == "BO5" and client_response == "Y":
     tipo = "BO5"
-
-
-# if both the host and client want a rematch, restart the game
-else:
-    player_x.restart()
-
 
 rematch = True
 while rematch == True:
@@ -107,7 +97,6 @@ while rematch == True:
     # end game messages
     if player_x.did_win("X", tipo) == True:
         player_x.colorear("red")
-        player_x.victory_counter("X")
         print(f"\033[91mGanador color rojo\033[0m" )
     elif player_x.is_draw() == True:
         print(f"It's a draw!")

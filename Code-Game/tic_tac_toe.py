@@ -160,7 +160,6 @@ class TicTacToe():
 
     def did_win(self, player_symbol, tipo):
         # Local variable to replace unwieldy self.symbol_list
-        print(tipo)
         g = []
         for i in range(9):
             g.append(self.symbol_list[i])
@@ -197,11 +196,12 @@ class TicTacToe():
 
         # Check top-right to bottom-left
         elif g[2] == x_color and g[4] == x_color and g[6] == x_color:
-            ganador_o = True
+            ganador_x = True
 
         # Check top-left to bottom-right
         elif g[0] == x_color and g[4] == x_color and g[8] == x_color:
-            ganador_o = True
+            ganador_x = True
+            
         elif g[3] == o_color and g[4] == o_color and g[5] == o_color:
             ganador_o = True
 
@@ -232,28 +232,21 @@ class TicTacToe():
         
         if ganador_x == True:
             counter_x += 1
-            print("Victorias X: "+ str(counter_x))
+            print("Victorias X: "+ str(counter_x) + " " + "Victorias O: " + str(counter_o))
+            return "continue"
         elif ganador_o == True:
             counter_o += 1
-            print("Victorias O: "+ str(counter_o))
-        if tipo == 'BO1':
-            print("BO1 elegido")
-            if counter_o == 1:
-                print("hola")
-                return True
-            elif counter_x == 1:
+            print("Victorias O: "+ str(counter_o) + " " +"Victorias X: " + str(counter_x))
+            return "continue"
+        if tipo == 'BO1':           
+            if counter_o == 1 or counter_x == 1:
                 return True
         elif tipo == 'BO3':
-            if counter_o == 2:
-                return True
-            elif counter_x == 2:
-                return True
+            if counter_o == 2 or counter_x == 2:
+                return True        
         elif tipo == 'BO5':
-            if counter_o == 3:
+            if counter_o == 3 or counter_x == 3:
                 return True
-            elif counter_x == 3:
-                return True
-     
         return False
 
     def is_draw(self):

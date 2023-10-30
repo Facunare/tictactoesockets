@@ -13,30 +13,26 @@ print(f"\nConnected to {s.getsockname()}!")
 # set up the game
 player_o = TicTacToe("O")
 # allow the player to suggest playing again
-print(f"\nWaiting for the host...")
+print("Waiting for the host...")
 host_response = s.recv(1024)
 host_response = pickle.loads(host_response)
 client_response = "N"
 
-# if the host wants a rematch, then the client is asked
-
-print(f"\nThe host wants a {host_response}")
-client_response = input("Accept? (Y/N): ")
-client_response = client_response.capitalize()
+print(f"The host wants a {host_response}")
+client_response = input("Accept? (Y/N): ").capitalize()
 temp_client_resp = client_response
 
-# let the host know what the client decided
 client_response = pickle.dumps(client_response)
 s.send(client_response)
 
-# if the client wants a rematch, restart the game
-if host_response=="Bo1" and client_response=="Y":
-    tipo = "BO1"
-elif host_response=="Bo3" and client_response=="Y":
-    tipo = "BO3"
-elif host_response=="Bo5" and client_response=="Y":
-    tipo = "BO5"
+tipo = ""
 
+if host_response == "BO1" and temp_client_resp == "Y":
+    tipo = "BO1"
+elif host_response == "BO3" and temp_client_resp == "Y":
+    tipo = "BO3"
+elif host_response == "BO5" and temp_client_resp == "Y":
+    tipo = "BO5"
 
 rematch = True
 
