@@ -34,9 +34,14 @@ client_response = client_socket.recv(1024)
 client_response = pickle.loads(client_response)
 
 # if the client doesn't want a rematch, exit the loop 
-if client_response == "N":
-    print(f"\nThe client does not want a rematch.")
-    rematch = False
+if host_response=="BO1" and client_response=="Y":
+    print("aca")
+    tipo = "BO1"
+elif host_response=="BO3" and client_response=="Y":
+    tipo = "BO3"
+elif host_response=="BO5" and client_response=="Y":
+    tipo = "BO5"
+
 
 # if both the host and client want a rematch, restart the game
 else:
@@ -45,12 +50,13 @@ else:
 
 rematch = True
 while rematch == True:
+
     tries = 0
     # a header for an intense tic-tac-toe match! 
     print(f"\n\n T I C - T A C - T O E ")
 
     # the rest is in a loop; if either player has won, it exits 
-    while player_x.did_win("X") == False and player_x.did_win("O") == False and player_x.is_draw() == False:
+    while player_x.did_win("X", tipo) == False and player_x.did_win("O", tipo) == False and player_x.is_draw() == False:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_x.draw_grid()
@@ -89,7 +95,7 @@ while rematch == True:
         client_socket.send(x_symbol_list)
 
         # if the player won with the last move or it's a draw, exit the loop 
-        if player_x.did_win("X") == True or player_x.is_draw() == True:
+        if player_x.did_win("X", tipo) == True or player_x.is_draw() == True:
             break
 
         # wait to receive the symbol list and update it
@@ -99,7 +105,7 @@ while rematch == True:
         player_x.update_symbol_list(o_symbol_list)
 
     # end game messages
-    if player_x.did_win("X", type) == True:
+    if player_x.did_win("X", tipo) == True:
         player_x.colorear("red")
         player_x.victory_counter("X")
         print(f"\033[91mGanador color rojo\033[0m" )

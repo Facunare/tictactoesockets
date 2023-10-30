@@ -158,76 +158,101 @@ class TicTacToe():
             self.symbol_list[i] = new_symbol_list[i]
 
 
-    def did_win(self, player_symbol, type):
+    def did_win(self, player_symbol, tipo):
         # Local variable to replace unwieldy self.symbol_list
+        print(tipo)
         g = []
         for i in range(9):
             g.append(self.symbol_list[i])
-            
-
+        counter_x = 0
+        counter_o = 0
+        ganador_x = False
+        ganador_o = False
         # Get the ANSI color codes for the player's symbols
         x_color = f"\033[91m{player_symbol}\033[0m"
         o_color = f"\033[94m{player_symbol}\033[0m"
         # Check top row
         if g[0] == x_color and g[1] == x_color and g[2] == x_color:
-            return True
+            ganador_x = True
 
         # Check middle row
         elif g[3] == x_color and g[4] == x_color and g[5] == x_color:
-            return True
+            ganador_x = True
 
         # Check bottom row
         elif g[6] == x_color and g[7] == x_color and g[8] == x_color:
-            return True
+            ganador_x = True
 
         # Check left column
         elif g[0] == x_color and g[3] == x_color and g[6] == x_color:
-            return True
+            ganador_x = True
 
         # Check middle column
         elif g[1] == x_color and g[4] == x_color and g[7] == x_color:
-            return True
+            ganador_x = True
 
         # Check right column
         elif g[2] == x_color and g[5] == x_color and g[8] == x_color:
-            return True
+            ganador_x = True
 
         # Check top-right to bottom-left
         elif g[2] == x_color and g[4] == x_color and g[6] == x_color:
-            return True
+            ganador_o = True
 
         # Check top-left to bottom-right
         elif g[0] == x_color and g[4] == x_color and g[8] == x_color:
-            return True
+            ganador_o = True
         elif g[3] == o_color and g[4] == o_color and g[5] == o_color:
-            return True
+            ganador_o = True
 
         # Check bottom row
         elif g[6] == o_color and g[7] == o_color and g[8] == o_color:
-            return True
+            ganador_o = True
 
         # Check left column
         elif g[0] == o_color and g[3] == o_color and g[6] == o_color:
-            return True
+            ganador_o = True
 
         # Check middle column
         elif g[1] == o_color and g[4] == o_color and g[7] == o_color:
-            return True
+            ganador_o = True
 
         # Check right column
         elif g[2] == o_color and g[5] == o_color and g[8] == o_color:
-            return True
+            ganador_o = True
 
         # Check top-right to bottom-left
         elif g[2] == o_color and g[4] == o_color and g[6] == o_color:
-            return True
+            ganador_o = True
 
         # Check top-left to bottom-right
         elif g[0] == o_color and g[4] == o_color and g[8] == o_color:
-            return True
+            ganador_o = True
 
-
-        # Didn't win
+        
+        if ganador_x == True:
+            counter_x += 1
+            print("Victorias X: "+ str(counter_x))
+        elif ganador_o == True:
+            counter_o += 1
+            print("Victorias O: "+ str(counter_o))
+        if tipo == 'BO1':
+            print("BO1 elegido")
+            if counter_o == 1:
+                print("hola")
+                return True
+            elif counter_x == 1:
+                return True
+        elif tipo == 'BO3':
+            if counter_o == 2:
+                return True
+            elif counter_x == 2:
+                return True
+        elif tipo == 'BO5':
+            if counter_o == 3:
+                return True
+            elif counter_x == 3:
+                return True
      
         return False
 
@@ -239,7 +264,7 @@ class TicTacToe():
                     num_blanks += 1
 
         # if the player didn't win and no spaces are left, it's a draw
-        if self.did_win(self.player_symbol) == False and num_blanks == 0:
+        if self.did_win(self.player_symbol, ".") == False and num_blanks == 0:
             return True
         else:
             return False

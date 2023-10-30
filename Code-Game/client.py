@@ -31,11 +31,11 @@ s.send(client_response)
 
 # if the client wants a rematch, restart the game
 if host_response=="Bo1" and client_response=="Y":
-    type = "BO1"
+    tipo = "BO1"
 elif host_response=="Bo3" and client_response=="Y":
-    type = "BO3"
+    tipo = "BO3"
 elif host_response=="Bo5" and client_response=="Y":
-    type = "BO5"
+    tipo = "BO5"
 
 
 rematch = True
@@ -55,7 +55,7 @@ while rematch == True:
 
     # the rest is in a loop; if either player has won, it exits
     tries = 0
-    while player_o.did_win("O") == False and player_o.did_win("X") == False and player_o.is_draw() == False:
+    while player_o.did_win("O", tipo) == False and player_o.did_win("X", tipo) == False and player_o.is_draw() == False:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_o.draw_grid()
@@ -94,7 +94,7 @@ while rematch == True:
         s.send(o_symbol_list)
 
         # if the player won with the last move or it's a draw, exit the loop
-        if player_o.did_win("O") == True or player_o.is_draw() == True:
+        if player_o.did_win("O", tipo) == True or player_o.is_draw() == True:
             break
 
         # wait to receive the symbol list and update it
@@ -104,7 +104,7 @@ while rematch == True:
         player_o.update_symbol_list(x_symbol_list)
 
     # end game messages
-    if player_o.did_win("O", type) == True:
+    if player_o.did_win("O", tipo) == True:
         player_o.colorear("blue")
         
         print(f"\033[94mGanador color azul\033[0m" )
