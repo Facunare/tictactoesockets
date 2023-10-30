@@ -13,6 +13,31 @@ print(f"\nConnected to {s.getsockname()}!")
 # set up the game
 player_o = TicTacToe("O")
 # allow the player to suggest playing again
+print(f"\nWaiting for the host...")
+host_response = s.recv(1024)
+host_response = pickle.loads(host_response)
+client_response = "N"
+
+# if the host wants a rematch, then the client is asked
+
+print(f"\nThe host wants a {host_response}")
+client_response = input("Accept? (Y/N): ")
+client_response = client_response.capitalize()
+temp_client_resp = client_response
+
+# let the host know what the client decided
+client_response = pickle.dumps(client_response)
+s.send(client_response)
+
+# if the client wants a rematch, restart the game
+if host_response=="Bo1" and client_response=="Y":
+    type = "BO1"
+elif host_response=="Bo3" and client_response=="Y":
+    type = "BO3"
+elif host_response=="Bo5" and client_response=="Y":
+    type = "BO5"
+
+
 rematch = True
 
 while rematch == True:
@@ -43,10 +68,13 @@ while rematch == True:
                 else:
                 
                     notMoves = player_o.swap_position("O", select_movement)
+
                     if not notMoves:
+                        print("No tenes movimientos. Intentá otra vez")
+                        
+                    else:                           
+                        player_o.draw_grid()
                         break
-                    player_o.draw_grid()
-                    break
         else:  
             while True:
                 player_coord = input(f"Enter coordinate: ")
@@ -76,8 +104,9 @@ while rematch == True:
         player_o.update_symbol_list(x_symbol_list)
 
     # end game messages
-    if player_o.did_win("O") == True:
+    if player_o.did_win("O", type) == True:
         player_o.colorear("blue")
+        
         print(f"\033[94mGanador color azul\033[0m" )
     elif player_o.is_draw() == True:
         print(f"It's a draw!")

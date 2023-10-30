@@ -20,6 +20,7 @@ class TicTacToe():
             self.player_symbol = f"\033[94m{player_symbol}\033[0m"
             
     def ocupado(self, grid_coord):
+    
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
 
@@ -55,7 +56,7 @@ class TicTacToe():
         else:
             contrario = f"\033[91mX\033[0m"
 
-        return self.symbol_list[grid_index] != "-" or self.symbol_list[grid_index] == contrario
+        return self.symbol_list[grid_index] not in  ["↑", "-", "↓", "→", "←"] or self.symbol_list[grid_index] == contrario
 
     def restart(self):
         # clears the grid 
@@ -148,7 +149,7 @@ class TicTacToe():
             elif col == "C":
                 grid_index = 8
 
-        if self.symbol_list[grid_index] == "-":
+        if self.symbol_list[grid_index] in  ["↑", "-", "↓", "→", "←"]:
             self.symbol_list[grid_index] = self.player_symbol
 
 
@@ -157,7 +158,7 @@ class TicTacToe():
             self.symbol_list[i] = new_symbol_list[i]
 
 
-    def did_win(self, player_symbol):
+    def did_win(self, player_symbol, type):
         # Local variable to replace unwieldy self.symbol_list
         g = []
         for i in range(9):
@@ -234,7 +235,7 @@ class TicTacToe():
         # see if all the spaces are used up 
         num_blanks = 0
         for i in range(9):
-                if self.symbol_list[i] == " " or self.symbol_list[i] == "-":
+                if self.symbol_list[i] == " " or self.symbol_list[i] in ["↑", "-", "↓", "→", "←"]:
                     num_blanks += 1
 
         # if the player didn't win and no spaces are left, it's a draw
@@ -339,12 +340,11 @@ class TicTacToe():
                         valid_options.append("B3")
 
             if not valid_options:
-                print("No hay ninguna opcion valida. Perdiste tu turno!!")
                 return False
             option_swaped = input(f"Enter option: ").upper()
             if option_swaped in valid_options:
                 self.edit_square(option_swaped)
-                self.delete_coord(coord)
+                self.delete_coord(coord, option_swaped)
                 break
             else:
                 print("Opción inválida. Las opciones válidas son:", ", ".join(valid_options))
@@ -353,13 +353,22 @@ class TicTacToe():
 
 
 
-    def delete_coord(self, grid_coord):
+    def delete_coord(self, grid_coord, option_swaped):
+        arriba = "↑"
+        abajo = "↓"
+        derecha = "→"
+        izquierda = "←"
         if grid_coord[0].isdigit():
             grid_coord = grid_coord[1] + grid_coord[0]
 
         # divides the coordinate
         col = grid_coord[0].capitalize()
         row = grid_coord[1]
+        col2 = option_swaped[0].capitalize()
+        row2 = option_swaped[1]
+        for i in range(9):
+            if self.symbol_list[i] in ["↑", "-", "↓", "→", "←"]:
+                self.symbol_list[i] = "-"
 
         # converts "A1" to 0, "C3" to 8, and so forth
         grid_index = 0
@@ -386,8 +395,37 @@ class TicTacToe():
             elif col == "C":
                 grid_index = 8
 
-
-        self.symbol_list[grid_index] = "-"
+        if row2 == "1":
+            if col2 == "A":
+                grid_index2 = 0
+            elif col2 == "B":
+                grid_index2 = 1
+            elif col2 == "C":
+                grid_index2 = 2
+        elif row2 == "2":
+            if col2 == "A":
+                grid_index2 = 3
+            elif col2 == "B":
+                grid_index2 = 4
+            elif col2 == "C":
+                grid_index2 = 5
+        elif row2 == "3":
+            if col2 == "A":
+                grid_index2 = 6
+            elif col2 == "B":
+                grid_index2 = 7
+            elif col2 == "C":
+                grid_index2 = 8
+        print(str(grid_index) +" "+str(grid_index2))
+        if grid_index+3==grid_index2:
+            movement = abajo
+        elif grid_index-3==grid_index2:
+            movement = arriba
+        elif grid_index+1==grid_index2:
+            movement = derecha
+        elif grid_index-1==grid_index2:
+            movement = izquierda
+        self.symbol_list[grid_index] = str(movement)
 
     def ocupado_rival(self, grid_coord):
         if grid_coord[0].isdigit():
@@ -422,4 +460,5 @@ class TicTacToe():
                 grid_index = 8
         self.symbol_list[grid_index] == rival_symbol
         return self.symbol_list[grid_index]
+
 

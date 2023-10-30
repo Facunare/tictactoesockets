@@ -20,9 +20,32 @@ print(f"\nConnnected to {client_address}!")
 player_x = TicTacToe("X")
 
 # allow the player to suggest playing again
+host_response = input(f"\nBO1, BO3 o BO5 ")
+host_response = host_response.capitalize()
+temp_host_resp = host_response
+client_response = ""
+
+# pickle response and send it to the client 
+host_response = pickle.dumps(host_response)
+client_socket.send(host_response)
+
+print(f"Waiting for client response...")
+client_response = client_socket.recv(1024)
+client_response = pickle.loads(client_response)
+
+# if the client doesn't want a rematch, exit the loop 
+if client_response == "N":
+    print(f"\nThe client does not want a rematch.")
+    rematch = False
+
+# if both the host and client want a rematch, restart the game
+else:
+    player_x.restart()
+
+
 rematch = True
-tries = 0
 while rematch == True:
+    tries = 0
     # a header for an intense tic-tac-toe match! 
     print(f"\n\n T I C - T A C - T O E ")
 
@@ -42,10 +65,13 @@ while rematch == True:
                 else:
                 
                     notMoves = player_x.swap_position("X", select_movement)
+
                     if not notMoves:
+                        print("No tenes movimientos. Intentá otra vez")
+                        
+                    else:                           
+                        player_x.draw_grid()
                         break
-                    player_x.draw_grid()
-                    break
         else:  
             while True:
                 player_coord = input(f"Enter coordinate: ")
@@ -73,8 +99,9 @@ while rematch == True:
         player_x.update_symbol_list(o_symbol_list)
 
     # end game messages
-    if player_x.did_win("X") == True:
+    if player_x.did_win("X", type) == True:
         player_x.colorear("red")
+        player_x.victory_counter("X")
         print(f"\033[91mGanador color rojo\033[0m" )
     elif player_x.is_draw() == True:
         print(f"It's a draw!")
@@ -115,4 +142,5 @@ spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
 
 client_socket.close()
 
-# Aceptar todo tipo de escritura
+# contador de victorias
+# Que ambos puedan elejir bo1, bo3 o bo5
