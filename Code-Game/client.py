@@ -100,6 +100,10 @@ while rematch == True:
         player_o.update_symbol_list(x_symbol_list)
 
     # end game messages
+    if player_o.did_win("O", tipo) == "continue":
+        player_o.colorear("red")
+        print(f"\033[94mGanador color azul\033[0m" )
+        player_o.restart()
     if player_o.did_win("O", tipo) == True:
         player_o.colorear("blue")
         

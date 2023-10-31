@@ -89,12 +89,17 @@ while rematch == True:
             break
 
         # wait to receive the symbol list and update it
+        if player_x.did_win("X", tipo) == "continue":
+            player_x.colorear("red")
+            print(f"\033[91mGanador color rojo\033[0m" )
+            player_x.restart()
         print(f"\nWaiting for other player...")
         o_symbol_list = client_socket.recv(1024)
         o_symbol_list = pickle.loads(o_symbol_list)
         player_x.update_symbol_list(o_symbol_list)
 
     # end game messages
+
     if player_x.did_win("X", tipo) == True:
         player_x.colorear("red")
         print(f"\033[91mGanador color rojo\033[0m" )
