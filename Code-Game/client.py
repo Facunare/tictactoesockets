@@ -92,7 +92,7 @@ while rematch == True:
         # if the player won with the last move or it's a draw, exit the loop
         if player_o.did_win("O", tipo) == True or player_o.is_draw() == True:
             break
-
+        
         # wait to receive the symbol list and update it
         print(f"\nWaiting for the other player...")
         x_symbol_list = s.recv(1024)
@@ -100,10 +100,7 @@ while rematch == True:
         player_o.update_symbol_list(x_symbol_list)
 
     # end game messages
-    if player_o.did_win("O", tipo) == "continue":
-        player_o.colorear("red")
-        print(f"\033[94mGanador color azul\033[0m" )
-        player_o.restart()
+    
     if player_o.did_win("O", tipo) == True:
         player_o.colorear("blue")
         
@@ -120,28 +117,35 @@ while rematch == True:
     client_response = "N"
 
     # if the host wants a rematch, then the client is asked
-    if host_response == "Y":
-        print(f"\nThe host would like a rematch!")
-        client_response = input("Rematch? (Y/N): ")
-        client_response = client_response.capitalize()
-        temp_client_resp = client_response
-
-        # let the host know what the client decided
-        client_response = pickle.dumps(client_response)
-        s.send(client_response)
-
-        # if the client wants a rematch, restart the game
-        if temp_client_resp == "Y":
+    if player_o.did_win("O", tipo) == "continue":
+            player_o.colorear("red")
+            print(f"\033[94mGanador color azul\033[0m" )
             player_o.restart()
-
-        # if the client said no, then no rematch
-        else:
-            rematch = False
-
-    # if the host said no, then no rematch
+            break
     else:
-        print(f"\nThe host does not want a rematch.")
-        rematch = False
+
+        if host_response == "Y":
+            print(f"\nThe host would like a rematch!")
+            client_response = input("Rematch? (Y/N): ")
+            client_response = client_response.capitalize()
+            temp_client_resp = client_response
+
+            # let the host know what the client decided
+            client_response = pickle.dumps(client_response)
+            s.send(client_response)
+
+            # if the client wants a rematch, restart the game
+            if temp_client_resp == "Y":
+                player_o.restart()
+
+            # if the client said no, then no rematch
+            else:
+                rematch = False
+
+        # if the host said no, then no rematch
+        else:
+            print(f"\nThe host does not want a rematch.")
+            rematch = False
 
 spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
 s.close()
