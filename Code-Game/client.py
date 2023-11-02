@@ -90,7 +90,7 @@ while rematch == True:
         s.send(o_symbol_list)
 
         # if the player won with the last move or it's a draw, exit the loop
-        if player_o.did_win("O", tipo) == True or player_o.is_draw() == True:
+        if player_o.did_win("O", tipo) == True or player_o.is_draw() == True or player_o.did_win("O", tipo) == "continue":
             break
         
         # wait to receive the symbol list and update it
@@ -103,26 +103,30 @@ while rematch == True:
     
     if player_o.did_win("O", tipo) == True:
         player_o.colorear("blue")
-        
         print(f"\033[94mGanador color azul\033[0m" )
     elif player_o.is_draw() == True:
         print(f"It's a draw!")
+    elif player_o.did_win("O", tipo) == "continue":
+        print("hola rojo")
+        player_o.colorear("blue")
+        print(f"\033[94mGanador color azul\033[0m" )
+        player_o.restart()
+    elif player_o.did_win("X", tipo) == "continue":
+        print(f"Sorry, the host won.")
+        rematch = True
     else:
         print(f"Sorry, the host won.")
 
-    # host is being asked for a rematch, awaiting response
-    print(f"\nWaiting for the host...")
-    host_response = s.recv(1024)
-    host_response = pickle.loads(host_response)
-    client_response = "N"
+        # host is being asked for a rematch, awaiting response
+        print(f"\nWaiting for the host...")
+        host_response = s.recv(1024)
+        host_response = pickle.loads(host_response)
+        client_response = "N"
 
-    # if the host wants a rematch, then the client is asked
-    if player_o.did_win("O", tipo) == "continue":
-            player_o.colorear("red")
-            print(f"\033[94mGanador color azul\033[0m" )
-            player_o.restart()
-            break
-    else:
+        # if the host wants a rematch, then the client is asked
+    
+    
+        
 
         if host_response == "Y":
             print(f"\nThe host would like a rematch!")
