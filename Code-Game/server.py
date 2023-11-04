@@ -17,7 +17,12 @@ print(f"\nConnnected to {client_address}!")
 
 player_x = TicTacToe("X")
 
-host_response = input("\nBO1, BO3 o BO5: ")
+while True:
+    host_response = input("\nBO1, BO3 o BO5: ").upper()
+    if host_response == "BO1" or host_response == "BO3" or host_response == "BO5":
+        break 
+    else:
+        print("Opcion invalida")
 host_response = host_response.upper()
 temp_host_resp = host_response
 client_response = ""
@@ -39,14 +44,20 @@ elif temp_host_resp == "BO5" and client_response == "Y":
     tipo = "BO5"
 
 rematch = True
-while rematch == True:
+contador_x = 0
+contador_o = 0
 
+while rematch == True:
+    partidas_totales = contador_o + contador_x + 1
     tries = 0
+    
     # a header for an intense tic-tac-toe match! 
     print(f"\n\n T I C - T A C - T O E ")
-
+    print(f"Partida N°{partidas_totales}")
     # the rest is in a loop; if either player has won, it exits 
-    while player_x.did_win("X", tipo) == False and player_x.did_win("O", tipo) == False and player_x.is_draw() == False:
+    print(player_x.did_win("X", tipo, contador_x, contador_o))
+    print(player_x.did_win("O", tipo, contador_x, contador_o))
+    while player_x.did_win("X", tipo, contador_x, contador_o) == False and player_x.did_win("O", tipo, contador_x, contador_o) == False and player_x.is_draw() == False:
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_x.draw_grid()
@@ -85,8 +96,10 @@ while rematch == True:
         client_socket.send(x_symbol_list)
 
         # if the player won with the last move or it's a draw, exit the loop 
-        if player_x.did_win("X", tipo) == True or player_x.is_draw() == True or player_x.did_win("X", tipo) == "continue" :
+        if player_x.did_win("X", tipo, contador_x, contador_o) == "rojo" or player_x.is_draw() == True or player_x.did_win("X", tipo, contador_x, contador_o) == "continue" :
             break
+        
+        
 
         # wait to receive the symbol list and update it
         
@@ -96,61 +109,76 @@ while rematch == True:
         player_x.update_symbol_list(o_symbol_list)
 
     # end game messages
-    print(player_x.did_win("X", tipo))
-    if player_x.did_win("X", tipo) == True:
+    if player_x.did_win("X", tipo, contador_x, contador_o) == "continue":
+            contador_x += 1
+    if player_x.did_win("O", tipo, contador_x, contador_o) == "continue":
+        contador_o += 1
+    if player_x.did_win("X", tipo, contador_x, contador_o) == "rojo":
         player_x.colorear("red")
         print(f"\033[91mGanador color rojo\033[0m" )
+        rematch = False
+        print("========================")
+        
+    if player_x.did_win("X", tipo, contador_x, contador_o) == "continue":
+        print(f"\033[91mGanador color rojo\033[0m" )
+        player_x.restart()
+        rematch = True
     elif player_x.is_draw() == True:
         print(f"It's a draw!")
-    elif player_x.did_win("X", tipo) == "continue":
-
-        player_x.colorear("red")
-        print(f"\033[91mGanador color rojo\033[0m" )
-        player_x.restart()
+    elif player_x.did_win("O", tipo, contador_x, contador_o) == "continue":
+        print(f"Sorry, the client won.")
         rematch = True
-    elif player_x.did_win("O", tipo) == "continue":
-        print(f"Sorry, the host won.")
-        rematch = True
+        print("------------------------")
     else:
         print(f"Sorry, the client won.")
-        
-host_response = input(f"\nRematch? (Y/N): ")
-host_response = host_response.capitalize()
-temp_host_resp = host_response
-client_response = ""
-
-# pickle response and send it to the client 
-host_response = pickle.dumps(host_response)
-client_socket.send(host_response)
-
-# if the host doesn't want a rematch, we're done here
-if temp_host_resp == "N":
-    rematch = False
-
-# if the host does want a rematch, we ask the client for their opinion
-else:
-    # receive client's response 
-    print(f"Waiting for client response...")
-    client_response = client_socket.recv(1024)
-    client_response = pickle.loads(client_response)
-
-    # if the client doesn't want a rematch, exit the loop 
-    if client_response == "N":
-        print(f"\nThe client does not want a rematch.")
+        print("**************************")
         rematch = False
+        
+    print("Victorias X: " + str(contador_x) + "Victorias O: " + str(contador_o))
+        
+    print(rematch)    
+    if rematch == False:
+            
+        host_response = input(f"\nRematch? (Y/N): ")
+        host_response = host_response.capitalize()
+        temp_host_resp = host_response
+        client_response = ""
 
-    # if both the host and client want a rematch, restart the game
-    else:
-        player_x.restart()
+        # pickle response and send it to the client 
+        host_response = pickle.dumps(host_response)
+        client_socket.send(host_response)
 
-    # ask for a rematch 
-    
-    
-    
+        # if the host doesn't want a rematch, we're done here
+        if temp_host_resp == "N":
+            rematch = False
+
+        # if the host does want a rematch, we ask the client for their opinion
+        else:
+            # receive client's response 
+            print(f"Waiting for client response...")
+            client_response = client_socket.recv(1024)
+            print(client_response)
+            client_response = pickle.loads(client_response)
+            print(client_response)
+            # if the client doesn't want a rematch, exit the loop 
+
+            if client_response == "N":
+                print(f"\nThe client does not want a rematch.")
+                rematch = False
+
+            # if both the host and client want a rematch, restart the game
+            else:
+                print("hola")
+                rematch = True
+                contador_o = 0
+                contador_x = 0
+                tries = 0
+                player_x.restart()
+                print(rematch)
+            # ask for a rematch 
 
 spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
-
 client_socket.close()
 
-# contador de victorias
-# Que ambos puedan elejir bo1, bo3 o bo5
+# que funcione el rematch
+# que vuelva a pedir bo1, bo3, bo5 dsp del rematch

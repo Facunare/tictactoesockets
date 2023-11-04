@@ -158,13 +158,11 @@ class TicTacToe():
             self.symbol_list[i] = new_symbol_list[i]
 
 
-    def did_win(self, player_symbol, tipo):
+    def did_win(self, player_symbol, tipo, counter_x, counter_o):
         # Local variable to replace unwieldy self.symbol_list
         g = []
         for i in range(9):
             g.append(self.symbol_list[i])
-        counter_x = 0
-        counter_o = 0
         ganador_x = False
         ganador_o = False
         # Get the ANSI color codes for the player's symbols
@@ -229,24 +227,26 @@ class TicTacToe():
         elif g[0] == o_color and g[4] == o_color and g[8] == o_color:
             ganador_o = True
 
-        
+        if tipo == 'BO1':           
+            if counter_o == 1:
+                return "azul"
+            if counter_x == 1:
+                return "rojo"
+        elif tipo == 'BO3':
+            if counter_o == 2:
+                return "azul"      
+            if counter_x == 2:
+                return "rojo"   
+        elif tipo == 'BO5':
+            if counter_o == 3:
+                return "azul"
+            if counter_x == 3:
+                return "rojo"
         if ganador_x == True:
-            counter_x += 1
-            print("Victorias X: "+ str(counter_x) + " " + "Victorias O: " + str(counter_o))
             return "continue"
         elif ganador_o == True:
-            counter_o += 1
-            print("Victorias O: "+ str(counter_o) + " " +"Victorias X: " + str(counter_x))
             return "continue"
-        if tipo == 'BO1':           
-            if counter_o == 1 or counter_x == 1:
-                return True
-        elif tipo == 'BO3':
-            if counter_o == 2 or counter_x == 2:
-                return True        
-        elif tipo == 'BO5':
-            if counter_o == 3 or counter_x == 3:
-                return True
+        
         return False
 
     def is_draw(self):
@@ -257,7 +257,7 @@ class TicTacToe():
                     num_blanks += 1
 
         # if the player didn't win and no spaces are left, it's a draw
-        if self.did_win(self.player_symbol, ".") == False and num_blanks == 0:
+        if self.did_win(self.player_symbol, ".", 0, 0) == False and num_blanks == 0:
             return True
         else:
             return False

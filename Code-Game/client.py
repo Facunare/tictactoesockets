@@ -35,11 +35,14 @@ elif host_response == "BO5" and temp_client_resp == "Y":
     tipo = "BO5"
 
 rematch = True
+contador_x = 0
+contador_o = 0
 
 while rematch == True:
+    partidas_totales = contador_o + contador_x + 1    
     # a header for an intense tic-tac-toe match!
     print(f"\n\n T I C - T A C - T O E ")
-
+    print(f"Partida N°{partidas_totales}")
     # draw the grid
     player_o.draw_grid()
 
@@ -51,7 +54,7 @@ while rematch == True:
 
     # the rest is in a loop; if either player has won, it exits
     tries = 0
-    while player_o.did_win("O", tipo) == False and player_o.did_win("X", tipo) == False and player_o.is_draw() == False:
+    while (player_o.did_win("O", tipo, contador_x, contador_o) == False and player_o.did_win("X", tipo, contador_x, contador_o) == False and player_o.is_draw() == False):
         # draw grid, ask for coordinate
         print(f"\n       Your turn!")
         player_o.draw_grid()
@@ -90,7 +93,7 @@ while rematch == True:
         s.send(o_symbol_list)
 
         # if the player won with the last move or it's a draw, exit the loop
-        if player_o.did_win("O", tipo) == True or player_o.is_draw() == True or player_o.did_win("O", tipo) == "continue":
+        if player_o.did_win("O", tipo, contador_x, contador_o) == "azul" or player_o.is_draw() == True or player_o.did_win("O", tipo, contador_x, contador_o) == "continue":
             break
         
         # wait to receive the symbol list and update it
@@ -100,34 +103,38 @@ while rematch == True:
         player_o.update_symbol_list(x_symbol_list)
 
     # end game messages
-    
-    if player_o.did_win("O", tipo) == True:
+    if player_o.did_win("X", tipo, contador_x, contador_o) == "continue":
+        contador_x += 1
+    if player_o.did_win("O", tipo, contador_x, contador_o) == "continue":
+        contador_o += 1
+    if player_o.did_win("O", tipo, contador_x, contador_o) == "azul":
         player_o.colorear("blue")
         print(f"\033[94mGanador color azul\033[0m" )
-    elif player_o.is_draw() == True:
-        print(f"It's a draw!")
-    elif player_o.did_win("O", tipo) == "continue":
-        print("hola rojo")
-        player_o.colorear("blue")
+        rematch = False
+    
+    if player_o.did_win("O", tipo, contador_x, contador_o) == "continue":
         print(f"\033[94mGanador color azul\033[0m" )
         player_o.restart()
-    elif player_o.did_win("X", tipo) == "continue":
+        rematch = True
+        print("========================")
+    elif player_o.is_draw() == True:
+        print(f"It's a draw!")
+    elif player_o.did_win("X", tipo, contador_x, contador_o) == "continue":     
         print(f"Sorry, the host won.")
         rematch = True
+        print("------------------------")
     else:
         print(f"Sorry, the host won.")
-
-        # host is being asked for a rematch, awaiting response
+        print("**************************")
+        rematch = False
+            # host is being asked for a rematch, awaiting response
+    print("Victorias X: " + str(contador_x) + "Victorias O: " + str(contador_o))        
+    print(rematch)
+    if rematch == False:
         print(f"\nWaiting for the host...")
         host_response = s.recv(1024)
         host_response = pickle.loads(host_response)
         client_response = "N"
-
-        # if the host wants a rematch, then the client is asked
-    
-    
-        
-
         if host_response == "Y":
             print(f"\nThe host would like a rematch!")
             client_response = input("Rematch? (Y/N): ")
@@ -141,7 +148,12 @@ while rematch == True:
             # if the client wants a rematch, restart the game
             if temp_client_resp == "Y":
                 player_o.restart()
-
+                print("hola")
+                rematch = True
+                contador_o = 0
+                contador_x = 0
+                tries = 0
+                print(rematch)
             # if the client said no, then no rematch
             else:
                 rematch = False
@@ -150,6 +162,5 @@ while rematch == True:
         else:
             print(f"\nThe host does not want a rematch.")
             rematch = False
-
 spacer = input(f"\nThank you for playing!\nPress enter to quit...\n")
 s.close()
