@@ -226,6 +226,9 @@ class TicTacToe():
         # Check top-left to bottom-right
         elif g[0] == o_color and g[4] == o_color and g[8] == o_color:
             ganador_o = True
+        # agregue esto ultimo
+        elif g[0] == o_color and g[1] == o_color and g[2] == o_color:
+            ganador_o = True
 
         if tipo == 'BO1':           
             if counter_o == 1:
@@ -359,7 +362,10 @@ class TicTacToe():
 
             if not valid_options:
                 return False
-            option_swaped = input(f"Enter option: ").upper()
+            while True:          
+                option_swaped = input(f"Enter option: ").upper()
+                if option_swaped in valid_options:
+                    break
             if option_swaped in valid_options:
                 self.edit_square(option_swaped)
                 self.delete_coord(coord, option_swaped)
