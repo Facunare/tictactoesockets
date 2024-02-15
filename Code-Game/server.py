@@ -35,7 +35,7 @@ while otra:
     client_response = pickle.loads(client_response)
 
     tipo = ""
-    print(temp_host_resp, client_response)
+
     if temp_host_resp == "BO1" and client_response == "Y":
         tipo = "BO1"
     elif temp_host_resp == "BO3" and client_response == "Y":
@@ -64,7 +64,7 @@ while otra:
                 while True:
                     print("Ahora debe mover una X de lugar")
                     select_movement = input(f"Enter coordinate: ")
-                    print(player_x.ocupado_rival(select_movement))
+                    
                     if not player_x.ocupado(select_movement) or player_x.ocupado_rival(select_movement) == f"\033[94mO\033[0m":
                         print("No hay una X ahi")
                     else:
@@ -122,11 +122,9 @@ while otra:
         elif player_x.is_draw() == True:
             print(f"It's a draw!")
         elif player_x.did_win("O", tipo, contador_x, contador_o) == "continue":
-            print(f"Sorry, the client won.")
             player_x.restart()
             rematch = True
         else:
-            print(f"Sorry, the client won.")
             rematch = False
             
         print("Victorias X: " + str(contador_x) + "Victorias O: " + str(contador_o))
@@ -152,9 +150,9 @@ while otra:
                 # receive client's response 
                 print(f"Waiting for client response...")
                 client_response = client_socket.recv(1024)
-                print(client_response)
+
                 client_response = pickle.loads(client_response)
-                print(client_response)
+
                 # if the client doesn't want a rematch, exit the loop 
 
                 if client_response == "N":
@@ -166,7 +164,6 @@ while otra:
                     contador_x = 0
                     tries = 0
                     player_x.restart()
-                    print(rematch)
                     otra = True
                 # ask for a rematch 
 

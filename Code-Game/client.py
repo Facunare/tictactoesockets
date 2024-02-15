@@ -122,10 +122,8 @@ while otra:
         elif player_o.is_draw() == True:
             print(f"It's a draw!")
         elif player_o.did_win("X", tipo, contador_x, contador_o) == "continue":     
-            print(f"Sorry, the host won.")
             rematch = True
         else:
-            print(f"Sorry, the host won.")
             rematch = False
                 # host is being asked for a rematch, awaiting response
         print("Victorias X: " + str(contador_x) + "Victorias O: " + str(contador_o))        
@@ -147,12 +145,10 @@ while otra:
                 # if the client wants a rematch, restart the game
                 if temp_client_resp == "Y":
                     player_o.restart()
-                    print("hola")
                     otra = True
                     contador_o = 0
                     contador_x = 0
                     tries = 0
-                    print(rematch)
                 # if the client said no, then no rematch
                 else:
                     otra = False
